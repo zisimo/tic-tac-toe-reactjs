@@ -47,10 +47,7 @@ export default class Board extends React.Component {
       return
     }
 
-    const squares = this
-      .state
-      .squares
-      .slice()
+    const squares = this.state.squares.slice()
     squares[i] = this.nextPlayerSymbol()
     this.setState({
       squares: squares,
@@ -58,7 +55,9 @@ export default class Board extends React.Component {
     })
 
     const winner = this.calculateWinner(squares)
-    if (winner) {
+    if (squares.indexOf(null) === -1) {
+      this.clear()
+    } else if (winner) {
       this.winnerFound(winner)
     }
   }
@@ -71,34 +70,18 @@ export default class Board extends React.Component {
 
   calculateWinner(squares) {
     const lines = [
-      [
-        0, 1, 2
-      ],
-      [
-        3, 4, 5
-      ],
-      [
-        6, 7, 8
-      ],
-      [
-        0, 3, 6
-      ],
-      [
-        1, 4, 7
-      ],
-      [
-        2, 5, 8
-      ],
-      [
-        0, 4, 8
-      ],
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
       [2, 4, 6]
     ];
 
     for (let i = 0; i < lines.length; i++) {
-      const [a,
-        b,
-        c] = lines[i]
+      const [a, b, c] = lines[i]
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
         return squares[a]
       }
@@ -109,13 +92,9 @@ export default class Board extends React.Component {
   winnerFound(winner) {
     this.clear()
     if (winner === 'X') {
-      this
-        .state
-        .winnerXCallback()
+      this.state.winnerXCallback()
     } else if (winner === 'O') {
-      this
-        .state
-        .winnerOCallback()
+      this.state.winnerOCallback()
     }
   }
 
